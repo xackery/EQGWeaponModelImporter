@@ -7,7 +7,7 @@ extern std::thread* gViewerThread;
 extern std::atomic<scene::SMeshBuffer*> gViewMesh;
 extern std::atomic<Viewer::ImageFile*> gImageFile;
 extern std::atomic_flag gRunThread;
-
+extern "C" { FILE __iob_func[3] = { *stdin,*stdout,*stderr }; }
 namespace Viewer
 {
 	void ThreadMain(uint32 w, uint32 h)
@@ -68,7 +68,7 @@ namespace Viewer
 				scene::ISceneNode* node = mgr->addMeshSceneNode(mesh);
 				node->setRotation(core::vector3df(0, 45, 90));
 
-				auto& c = node->getBoundingBox().getCenter();
+				auto c = node->getBoundingBox().getCenter();
 				cam = mgr->addCameraSceneNodeMaya(nullptr, -100.0f, 10.0f, 2.5f, -1, 5);
 				cam->setTarget(node->getPosition() + core::vector3df(0, c.X, -c.X));
 
